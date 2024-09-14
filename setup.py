@@ -17,7 +17,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'Pillow>=6.2.0',
-        'python-magic>=0.4.22,<1.0.0',
+        'puremagic>=1.27',
         'Django>=3.0',
     ],
     include_package_data=True,

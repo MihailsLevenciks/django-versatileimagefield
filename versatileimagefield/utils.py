@@ -2,7 +2,7 @@ from functools import reduce
 
 import os
 
-import magic
+import puremagic
 from django.core.exceptions import ImproperlyConfigured
 
 from .settings import (
@@ -150,7 +150,13 @@ def get_image_metadata_from_file(file_like):
         [1]: InMemoryUploadedFile-friendly save format (i.e. 'image/jpeg')
     image_format, in_memory_file_type
     """
-    mime_type = magic.from_buffer(file_like.read(1024), mime=True)
+    mime_type = puremagic.magic_stream(file_like)
+
+    if mime_type and len(mime_type) > 0:
+        mime_type = mime_type[0].mime_type
+    else:
+        mime_type = ''
+
     file_like.seek(0)
     image_format = MIME_TYPE_TO_PIL_IDENTIFIER[mime_type]
     return image_format, mime_type
